@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/A2ronHsu/PrismaORM-Practice#readme",
   "dependencies": {
+    "@prisma/client": "^6.6.0",
     "express": "^5.1.0"
   },
   "devDependencies": {
