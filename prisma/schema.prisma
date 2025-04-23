@@ -22,14 +22,21 @@ model User {
   phone String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  //relationshipt
+  post Post[]
+
   @@map("users")
 }
 
 model Post{
   id String @id @default(uuid())
-  id_user String
+  id_user String 
   name String
   conteudo String @db.Text
+
+  //relationship
+  author User @relation(fields: [id_user],references: [id])
 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt

@@ -23,6 +23,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  //relationshipt
+  post Post[]
+
   @@map("users")
 }
 
@@ -31,6 +34,9 @@ model Post {
   id_user  String
   name     String
   conteudo String @db.Text
+
+  //relationship
+  author User @relation(fields: [id_user], references: [id])
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
