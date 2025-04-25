@@ -36,7 +36,7 @@ model Post{
   conteudo String @db.Text
 
   //relationship
-  author User @relation(fields: [id_user],references: [id])
+  author User @relation(fields: [id_user],references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
