@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import UserService from "../services/UserService";
+
 import UserInMemoryRepository from "../repositories/in-memory/UserInMemoryRepository";
 import UserPrismaRepository from "../repositories/prisma/UsuarioPrismaRepository";
 
-const userService = new UserService( new UserPrismaRepository())
+import { UserInterface } from "../models/User";
+import { User } from "../generated/prisma";
+
+
+const userService = new UserService( new UserInMemoryRepository())
 
 export default class UserController {
    async getall(req: Request,res: Response){
@@ -19,7 +24,9 @@ export default class UserController {
    
    async getById(req: Request, res: Response){
       try {
-
+         const id : string= req.params.id;
+         const user = await userService.getById(id);
+         res.json({user});
       }catch(error:any){
          res.status(400)
          res.json({error:error.message})
@@ -28,8 +35,24 @@ export default class UserController {
 
    async create(req: Request, res: Response){
       try {
+         const {name,email,password,phone} = req.body
 
+         if(!name || !email || !password) throw new Error("preencha todos os bancos");
+
+         const user : UserInterface = {
+            name: name,
+            email: email,
+            password: password,
+            phone: phone,
+         }
+
+         const createdUser: User = await userService.create(user);
          
+         res.json({createdUser});
+
+
+
+
       }catch(error:any){
          res.status(400)
          res.json({error:error.message})

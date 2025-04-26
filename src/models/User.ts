@@ -1,7 +1,6 @@
-export interface User {
-   id: string,
+export interface UserInterface {
    name: string,
    email: string,
    password: string,
-   phone?: string|null
+   phone: string|null,
 }

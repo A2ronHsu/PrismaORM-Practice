@@ -1,6 +1,8 @@
-import { User } from "../../models/User";
+import { UserInterface } from "../../models/User";
+import { User } from "../../generated/prisma";
 import UserPrismaRepository from "../prisma/UsuarioPrismaRepository";
 
+import { v4 as uuid } from "uuid";
 
 export default class UserInMemoryRepository implements UserPrismaRepository {
    private user: User[] = []
@@ -13,6 +15,9 @@ export default class UserInMemoryRepository implements UserPrismaRepository {
             "email": "testmail@mail.com",
             "password": "123456789",
             "phone": null,
+            "createdAt": new Date(),
+            "updatedAt": new Date(),
+
          }
       ]
    }
@@ -21,20 +26,34 @@ export default class UserInMemoryRepository implements UserPrismaRepository {
       return this.user;
    }
 
-   // async getById(id:string): Promise<User|null> {
-   //    const dataUser = this.user.find(item => {item.id === id});
-   //    if (!dataUser) {
-   //       return null;
-   //    }
+   async getById(id:string): Promise<User> {
+      const dataUser = this.user.find(item => {item.id === id});
+      if (!dataUser) {
+         throw new Error("user missing")
+      }
 
-   //    return dataUser
-   // }
+      return dataUser
+   }
 
-   // async create(data: User){
-   //    this.user.push(data);
-   //    return data;
-   // }
+   async create(data: UserInterface):Promise<User>{
+      const createdUser : User= {
+         id: uuid(),
+         name:data.name,
+         password:data.password,
+         email: data.email,
+         phone:data.phone,
+         createdAt: new Date(),
+         updatedAt: new Date()
+      }
+      this.user.push(createdUser);
+      return createdUser;
+   }
 
+   async getByEmail(email: string): Promise<User|null> {
+      const user : User|undefined = this.user.find(elem => elem.email == email)
+      if (!user) return null;
+      return user;
+   }
    // async update(id: string, data: User){
    //    const index = this.user.findIndex(item => item.id === id);
    //    return this.user[index] = data;
