@@ -37,6 +37,9 @@ export default class UserService {
       const oldUser = await this.userRepository.update(id,updateUser);
       return oldUser;
    };
-   async delete(){};
+   async delete(id:string){
+      const deletedUser = await this.userRepository.delete(id);
+      return deletedUser;
+   };
    
 }

@@ -60,7 +60,10 @@ export default class UserInMemoryRepository implements UserPrismaRepository {
       return user;
    }
 
-   // async delete(id:string){
-   //    const index = this.user.findIndex(item => item.id === id);
-   // }
+   async delete(id:string): Promise<User>{
+      const index = this.user.findIndex(item => item.id === id);
+      if (index === -1) throw new Error("missing user");
+      this.user = this.user.slice(0,index).concat(this.user.slice(index+1));
+      return this.user[index];
+   }
 }

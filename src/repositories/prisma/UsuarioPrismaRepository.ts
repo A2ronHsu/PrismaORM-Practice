@@ -64,6 +64,14 @@ export default class UserPrismaRepository{
 
       return oldUser;
    };
-   // async delete(){};
+   async delete(id:string):Promise<User>{
+      const deletedUser = await prisma.user.delete({
+         where:{
+            id:id
+         }
+      })
+
+      return deletedUser;
+   };
    
 }

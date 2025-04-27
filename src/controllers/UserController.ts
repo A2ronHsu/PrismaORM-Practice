@@ -62,7 +62,7 @@ export default class UserController {
    async update( req: Request, res: Response){
       try{
          const {id,name,email,password,phone} = req.body;
-         if(!name || !email || !password) throw new Error("complete os campos obrigatorios");
+         if(!name || !email || !password ) throw new Error("complete os campos obrigatorios");
 
          const updateUser: UserInterface = {
             name:name,
@@ -82,6 +82,12 @@ export default class UserController {
 
    async delete(req: Request, res: Response){
       try{
+         const {id} = req.body;
+         if (!id) throw new Error("missing id");
+
+         const deletedUser = await userService.delete(id);
+         
+         res.json({deleted:deletedUser});
 
       }catch(error:any){
          res.status(400)
