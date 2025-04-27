@@ -33,7 +33,10 @@ export default class UserService {
       
       return user;
    }
-   async update(){};
+   async update(id:string, updateUser: UserInterface){
+      const oldUser = await this.userRepository.update(id,updateUser);
+      return oldUser;
+   };
    async delete(){};
    
 }

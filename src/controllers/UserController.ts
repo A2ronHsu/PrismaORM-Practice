@@ -8,7 +8,7 @@ import { UserInterface } from "../models/User";
 import { User } from "../generated/prisma";
 
 
-const userService = new UserService( new UserInMemoryRepository())
+const userService = new UserService( new UserPrismaRepository())
 
 export default class UserController {
    async getall(req: Request,res: Response){
@@ -35,7 +35,7 @@ export default class UserController {
 
    async create(req: Request, res: Response){
       try {
-         const {name,email,password,phone} = req.body
+         const {name,email,password,phone} = req.body;
 
          if(!name || !email || !password) throw new Error("preencha todos os bancos");
 
@@ -61,6 +61,18 @@ export default class UserController {
 
    async update( req: Request, res: Response){
       try{
+         const {id,name,email,password,phone} = req.body;
+         if(!name || !email || !password) throw new Error("complete os campos obrigatorios");
+
+         const updateUser: UserInterface = {
+            name:name,
+            email:email,
+            password:password,
+            phone:phone
+         }
+
+         const oldUser : User = await userService.update(id,updateUser);
+         res.json({updated:id,updateUser,oldUser});
 
       }catch(error:any){
          res.status(400)

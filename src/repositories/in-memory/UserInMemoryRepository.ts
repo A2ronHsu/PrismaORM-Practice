@@ -54,10 +54,11 @@ export default class UserInMemoryRepository implements UserPrismaRepository {
       if (!user) return null;
       return user;
    }
-   // async update(id: string, data: User){
-   //    const index = this.user.findIndex(item => item.id === id);
-   //    return this.user[index] = data;
-   // }
+   async update(id: string, data: UserInterface){
+      const user = this.user.find(item => item.id === id);
+      if(!user) throw new Error("bad user data")
+      return user;
+   }
 
    // async delete(id:string){
    //    const index = this.user.findIndex(item => item.id === id);
